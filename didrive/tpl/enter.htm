@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Магия в деталях</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="{{ sdd }}font/iconsmind/style.css" />
+        <link rel="stylesheet" href="{{ sdd }}font/simple-line-icons/css/simple-line-icons.css" />
+
+        <link rel="stylesheet" href="{{ sdd }}css/vendor/bootstrap.min.css" />
+        <link rel="stylesheet" href="{{ sdd }}css/vendor/bootstrap-float-label.min.css" />
+        <link rel="stylesheet" href="{{ sdd }}css/main.css" />
+        <link rel="stylesheet" type="text/css" href="{{ sdd }}css/dore.light.blue.min.css">
+    </head>
+
+    <body class="background xshow-spinner">
+        <div class="fixed-background"></div>
+        <main>
+            <div class="container">
+                <div class="row h-100">
+                    <div class="col-12 col-md-10 mx-auto my-auto">
+                        <div class="card auth-card">
+                            <div class="position-relative image-side " {% if didrive_enter_img is defined %} style="background-image: url('{{ didrive_enter_img }}');" {% endif %} >
+
+                                <p class=" text-white h2" style="text-transform: uppercase; text-shadow: 0 0 5px black; ">Магия в&nbsp;деталях</p>
+
+                                <p class="white mb-0" style="text-shadow: 0 0 5px black;">
+                                    Управляйте управляемым
+                                    {#
+                                    <br>If you are not a member, please
+                                    <a href="#" class="white">register</a>.
+                                    #}
+                                </p>
+                            </div>
+                            <div class="form-side">
+
+
+                                <center>
+
+                                    <a href="/i.didrive.php" style="display: inline-block;margin-bottom:2rem;">
+                                        {# <span class="logo-single"></span> #}
+                                        <img src="/didrive/img/logo.svg" onerror="this.onerror=null; this.src='/0.didrive/img/logo.png'" class="logos" style="width:18rem;" />
+                                    </a>
+
+                                    {% if get.warn is defined and get.warn is not empty %}
+                                        <div class='col-xs-12 col-md-12 text-center' >
+                                            <div  style="background-color: yellow; color: red; padding:0.5em; display: inline-block; margin: 5px 2rem; width:80%; border-radius: 5px;">
+                                                {{ get.warn|raw }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <h6>Войти с помощью:</h6>
+                                    <br/>
+
+                                    <table><tr>
+
+                                            <td {#style="padding-right:15px;"#} >
+
+                                                {#                                                
+                                                <script type="text/javascript" src="https://vk.com/js/api/openapi.js?167"></script>
+                                                <script type="text/javascript">
+                                                    VK.init({apiId: 7171647});
+                                                </script>
+
+                                                <!-- VK Widget -->
+                                                <div id="vk_auth"></div>
+                                                <script type="text/javascript">
+                                                    VK.Widgets.Auth("vk_auth", {"authUrl": "/i.didrive.php"});
+                                                </script>
+                                                #}
+                                                
+                                                <a href="https://oauth.vk.com/authorize?client_id={{ id_app }}&redirect_uri={{ url_script }}&response_type=code" ><img src="/img/icon/vk04.png" style="max-width:40px;" /></a>
+
+                                                &nbsp;
+                                            </td>
+                                            <td>                                    
+
+
+
+
+
+                                                <!--                                    
+                                                <script type="text/javascript">
+                                                    $().ready(function () {
+                                                        setTimeout(function(){
+                                                        document.write('<script src=' + '"//ulogin.ru/js/ulogin.' + 'js"><' + '/script><div ' + ' id="uLogin_didrive" data-ul' + 'ogin="verify=1;display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,yandex,odnoklassniki,google,facebook;redirect_uri=%2F%2F{$smarty.server.HTTP_HOST}%2Fi.didrive.php;mobilebuttons=0;"' + '></' + 'div>');
+                                                        $.getScript("ulogin.ru/js/ulogin.js");
+                                                        },5000)
+                                                    });
+                                                </script>-->
+                                                {# <div id="uLogin_didrive" data-ulogin="verify=1;display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,yandex,odnoklassniki,google,facebook;redirect_uri=%2F%2F{{ host }}%2Fi.didrive.php;mobilebuttons=0;"></div> #}
+                                                <div id="uLogin_didrive" data-ulogin="verify=1;display=panel;theme=classic;fields=first_name,last_name;providers=yandex,odnoklassniki,google,facebook;redirect_uri=%2F%2F{{ host }}%2Fi.didrive.php;mobilebuttons=0;"></div>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <br/>
+                                    <br/>
+
+                                    {% if 1 == 2 %}
+
+                                        <script type="text/javascript" src="https://vk.com/js/api/openapi.js?162"></script>
+                                        <script type="text/javascript">
+                                            VK.init({apiId: 6449627});
+                                        </script>
+                                        <!-- VK Widget -->
+                                        <div id="vk_auth"></div>
+                                        <script type="text/javascript">
+                                            VK.Widgets.Auth("vk_auth", {"authUrl": "/"});
+                                        </script>                                    
+
+
+                                        <br/>
+                                        <br/>
+
+                                    {% endif %}
+
+                                    <h6 class="mb-4">или</h6>
+
+                                    <form action="" method="post" >
+                                        <label class="form-group has-float-label mb-4">
+                                            <input class="form-control" type="text" name="login2" value="" required="" />
+                                            <span>Логин</span>
+                                        </label>
+
+                                        <label class="form-group has-float-label mb-4">
+                                            <input class="form-control" type="password" name="pass2" value=""  required="" />
+                                            <span>Пароль</span>
+                                        </label>
+
+
+                                        {# <a href="#">Forget password?</a> #}
+                                        <button class="btn btn-primary btn-lg btn-shadow" type="submit" name="enter" value="Войти" >Войти</button>
+
+
+                                    </form>
+
+                                </center>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="{{ sdd }}js/vendor/jquery-3.3.1.min.js"></script>
+        {#
+        <script src="{{ sdd }}js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="{{ sdd }}js/dore.script.js"></script>
+        <script src="{{ sdd }}js/scripts.js"></script>
+        #}
+        <script type="text/javascript">
+                                            $().ready(function () {
+                                                // удаление загрузчика
+                                                $('body').removeClass('show-spinner');
+                                            });
+                                            // document.write('<script src=' + '"//ulogin.ru/js/ulogin.' + 'js"><' + '/script>');
+        </script>
+        <script src="//ulogin.ru/js/ulogin.js"></script>
+
+    </body>
+
+</html>

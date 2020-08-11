@@ -1,0 +1,65 @@
+// 1
+%section
+  .sk-rotating-plane
+
+// 2
+%section
+  .sk-double-bounce
+    .sk-child.sk-double-bounce-1
+    .sk-child.sk-double-bounce-2
+
+// 3
+%section
+  .sk-wave
+    - (1..5).each do |i|
+      .sk-rect{:class => "sk-rect-#{i}"}
+
+// 4
+%section
+  .sk-wandering-cubes
+    .sk-cube.sk-cube-1
+    .sk-cube.sk-cube-2
+
+// 5
+%section
+  .sk-spinner.sk-spinner-pulse
+
+// 6
+%section
+  .sk-chasing-dots
+    .sk-child.sk-dot-1
+    .sk-child.sk-dot-2
+
+// 7
+%section
+  .sk-three-bounce
+    - (1..3).each do |i|
+      .sk-child{:class => "sk-bounce-#{i}"}
+
+// 8
+%section
+  .sk-circle-bounce
+    - (1..12).each do |i|
+      .sk-child{:class => "sk-circle-#{i}"}
+
+// 9
+%section
+  .sk-cube-grid
+    - (1..9).each do |i|
+      .sk-cube{:class => "sk-cube-#{i}"}
+
+// 10
+%section
+  .sk-fading-circle
+    - (1..12).each do |i|
+      .sk-circle{:class => "sk-circle-#{i}"}
+
+// 11
+%section
+  .sk-folding-cube
+    .sk-cube.sk-cube-1
+    .sk-cube.sk-cube-2
+    .sk-cube.sk-cube-4
+    .sk-cube.sk-cube-3
+
+%section

@@ -1,0 +1,174 @@
+{% spaceless %}
+
+    <div class="sidebar" style="z-index:1000;" >
+        <div class="main-menu"  style="z-index:950;" >
+            <div class="scroll">
+                <ul class="list-unstyled">
+
+                    {% if get.level is defined and get.level is not empty %}
+                        {% set menu = 'module' %}
+                    {% elseif get.adm_module is defined and get.adm_module is not empty %}
+                        {% set menu = 'adm_module' %}
+                    {% else %}
+                        {% set menu = 'start' %}
+                    {% endif %}
+
+                    {% set module_start_est = false %}
+
+                    {#{ pa(a_menu) }#}
+                    
+                    {% for k, v in a_menu %}
+
+                        {% if v['module_start'] is defined and v['module_start'] == 'da' %}
+                            {% set module_start_est = true %}
+                        {% endif %}
+
+                        {% if v['in-di-menu-1'] is defined and v['in-di-menu-1'] == 'da' and v.name|length > 2 %}
+
+                            {% if ( get.level is defined and get.level == k ) %}
+                                {% set menu = '' %}
+                            {% endif %}
+
+                            <li {% if ( get.level is defined and get.level == k ) %} class="active" {% endif %} >
+                                <a href="/i.didrive.php?level={{ k }}&option=index">
+                                    <i class="active {% if v['in-di-menu-1-icon'] is defined %} fa fa-{{ v['in-di-menu-1-icon'] }}{% else %}iconsmind-Three-ArrowFork{% endif %}"></i> 
+                                    {{ v.name }}
+                                </a>
+                            </li>
+
+                            {#
+                            <a href="/i.didrive.php?level={{ k }}" class="btn-menu-didrive xxbrd-rd5 btn btn-outline-secondary">
+                                <span class="glyphicon {{ v.icon }}" aria-hidden="true"></span>
+                                {{ v.name }}
+                            </a>
+                            #}
+
+                        {% endif %}                    
+                    {% endfor %}                    
+
+
+                    {% if module_start_est == false %}
+                        <li {% if menu == 'start' %} class="active" {% endif %} >
+                            <a href="?show=index&start=1">
+                                <i class="iconsmind-Space-Needle"></i> Навигатор
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li {% if menu == 'module' %} class="active" {% endif %} >
+                        <a href="#modules">
+                            <i class="iconsmind-Air-Balloon"></i> Модули
+                        </a>
+                    </li>
+
+                    {#
+                    <li {% if menu == 'adm_module' %} class="active" {% endif %} >
+                        <a href="#menu">
+                            <i class="iconsmind-Three-ArrowFork"></i> Управление
+                        </a>
+                    </li>
+                    #}
+
+
+
+
+                    {% if 1 == 2  %}
+                        <li>
+                            <a href="#dashboard">
+                                <i class="iconsmind-Shop-4"></i>
+                                <span>Dashboards</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="#layouts">
+                                <i class="iconsmind-Digital-Drawing"></i> Layouts
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#applications">
+                                <i class="iconsmind-Air-Balloon"></i> Applications
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#ui">
+                                <i class="iconsmind-Pantone"></i> UI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#landingPage">
+                                <i class="iconsmind-Space-Needle"></i> Landing Page
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu">
+                                <i class="iconsmind-Three-ArrowFork"></i> Menu
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                        <li class="text-center" style="color:lightgray;"> =memory_usage= Mb</li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-menu" style="z-index:800;" >
+            <div class="scroll" >
+                <ul class="list-unstyled" data-link="modules">
+
+                    {% for k, v in a_menu %}
+                        <li {% if get.module == k %} class="active" {% endif %} >
+                            <a href="?level={{ k }}">
+                                <i class="simple-icon-picture"></i> {{ v.name }} {# <span class="badge badge-pill badge-outline-primary float-right mr-4">NEW</span> #}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if 1 == 2 %}
+                        <li>
+                            <a href="Apps.MediaLibrary.html">
+                                <i class="simple-icon-picture"></i> Library <span class="badge badge-pill badge-outline-primary float-right mr-4">NEW</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Apps.Todo.List.html">
+                                <i class="simple-icon-check"></i> Todo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Apps.Survey.List.html">
+                                <i class="simple-icon-calculator"></i> Survey
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Apps.Chat.html">
+                                <i class="simple-icon-bubbles"></i> Chat
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="list-unstyled" data-link="menu">
+                    {% if 1 == 2 %}
+                        <li>
+                            <a href="Menu.Default.html">
+                                <i class="simple-icon-control-pause"></i> Default
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Menu.Subhidden.html">
+                                <i class="simple-icon-arrow-left mi-subhidden"></i> Subhidden
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Menu.Hidden.html">
+                                <i class="simple-icon-control-start mi-hidden"></i> Hidden
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+{% endspaceless %}
