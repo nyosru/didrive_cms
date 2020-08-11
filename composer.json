@@ -1,8 +1,8 @@
 
 {
     "name": "didrive/cms",
-    "description": "cms didrive",
-    "version": "0.0.4",
+    "description": "cms didrive v1",
+    "version": "0.0.5",
     
     "keywords": [
         "didrive", "module", "nyos", "uralweb.info"
@@ -19,7 +19,9 @@
     "homepage": "https://uralweb.info/php/#classes",
     "license": "MIT",
     "require-dev": {
+    
         "phpunit/phpunit": "^9"
+        
     },
     "require": {
 
