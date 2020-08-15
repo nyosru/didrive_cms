@@ -2,7 +2,7 @@
 {
     "name": "didrive/cms",
     "description": "cms didrive v1",
-    "version": "0.0.10",
+    "version": "0.0.11",
     
     "keywords": [
         "didrive", "module", "nyos", "uralweb.info"
@@ -27,7 +27,6 @@
     
         "php": ">=7.1.0" ,
         "twig/twig": "2.13.1" ,
-        "didrive/f": ">=1.0.11" ,
         "fortawesome/font-awesome": ">=5.9",
         "true/punycode": ">=2.1",
         "components/jquery": ">=3.3",
