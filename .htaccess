@@ -1,13 +1,6 @@
-
-
-
-
 <IfModule mod_rewrite.c>
 
 RewriteEngine on
-
-
-
 
 # нам нужно извлечь значение старого параметра,
 # чтобы потом его передать в RewriteRule
@@ -23,16 +16,10 @@ RewriteRule ^didrive/--(.*)--/(aut_vk).php(.*)$    /vendor/didrive/base/ajax.aut
 
     #RewriteRule ^didrive/aut_vk/(.*)$    /vendor/didrive/base/ajax.aut_vk.php?v=3&$1 [L]
 
-
-
-
-
 #    RewriteRule ^vendor/(.*)ajax.php$        /vendor/$1ajax.php [L]
 
     RewriteRule ^robots.txt$	/all/robots.php [L]
-
     RewriteRule ^(.*)\.sl3$	/ [R=301,L]
-
     RewriteRule ^didrive-api/(.*)/(.*)/(.*)$	/vendor/didrive_api/$1/$2/ajax.php?$3 [L]
 
 

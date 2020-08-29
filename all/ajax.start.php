@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/session_start.php';
 
 \Nyos\Nyos::getFolder();
 
-if (isset(\Nyos\Nyos::$folder_now{2}))
+if (!empty(\Nyos\Nyos::$folder_now))
     $vv['folder'] = \Nyos\Nyos::$folder_now;
 
 \Nyos\Nyos::defineVars();

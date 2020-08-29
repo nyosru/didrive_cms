@@ -68,7 +68,7 @@ class NyosEx extends \Exception {
             $db2->execute(array(
                 ':msg' => $message,
                 ':code' => $code,
-                ':folder' => isset(\Nyos\Nyos::$folder_now{0}) ? \Nyos\Nyos::$folder_now : '',
+                ':folder' => \Nyos\Nyos::$folder_now ?? '',
                 ':domain' => domain,
                 ':file' => $this->file,
                 ':line' => $this->line,

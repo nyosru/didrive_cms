@@ -40,18 +40,26 @@ require_once dirname(__FILE__) . '/session_start.php';
 
 \Nyos\Nyos::getFolder();
 
-if (isset(\Nyos\Nyos::$folder_now{2}))
+if ( !empty(\Nyos\Nyos::$folder_now) )
     $vv['folder'] = \Nyos\Nyos::$folder_now;
 
 // echo '<br/>'.__LINE__.' '.$vv['folder'];
 
 \Nyos\Nyos::defineVars();
 
+//\f\pa(\Nyos\Nyos::$db_type);
+//die();
+
 //if ($_SERVER['HTTP_HOST'] == 'adomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info') {
 //        die('<br/>' . __FILE__ . ' ' . __LINE__);
 //    }
     
 require_once $_SERVER['DOCUMENT_ROOT'] . '/all/sql.start.php';
+
+
+// \f\pa(\Nyos\Nyos::$db_type);
+// die();
+
 
 //if ($_SERVER['HTTP_HOST'] == 'adomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info') {
 //        die('<br/>' . __FILE__ . ' ' . __LINE__);

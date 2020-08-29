@@ -1,5 +1,7 @@
 <?php
 
+
+
 //echo 'wefwef';
 
 /*
@@ -20,13 +22,13 @@ if ($_SERVER['HTTP_HOST'] == 'photo.uralweb.info' || $_SERVER['HTTP_HOST'] == 'y
     date_default_timezone_set("Asia/Yekaterinburg");
 }
 
-if (1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
-) {
+//if ( 1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
+//) {
 
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
-}
+//}
 
 // if( $_SERVER['HTTP_HOST'] == '46.254.18.85' || $_SERVER['HTTP_HOST'] == '37.143.15.250' ){ die(); }
 
@@ -52,6 +54,8 @@ elseif (isset($_GET['goto'])) {
 //die('123');
 
 ob_start('ob_gzhandler');
+
+// \Nyos\Nyos::$db_type == 'pg' ) ) {
 
 try {
 

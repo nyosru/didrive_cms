@@ -62,6 +62,9 @@ try {
     if (file_exists(DR . dir_site . 'config.php'))
         require( DR . dir_site . 'config.php');
 
+//    if (file_exists(DR . dir_site . 'config.db.php'))
+//        require( DR . dir_site . 'config.db.php');
+
     if (isset($_SESSION['now_user_di']['soc_web_id']{1}) && !isset($_SESSION['now_user_di']['uid'])) {
         $_SESSION['now_user_di']['uid'] = $_SESSION['now_user_di']['soc_web_id'];
     }
@@ -107,42 +110,96 @@ try {
             $url_script = $vv['url_script']; //ссылка на этот скрипт
 
             $t = 'https://oauth.vk.com/access_token?client_id=' . $id_app . '&client_secret=' . $secret_app . '&code=' . $_GET['code'] . '&redirect_uri=' . $url_script;
-            $token = json_decode( \f\get_curl_https_uri($t) , true);
+            $token = json_decode(\f\get_curl_https_uri($t), true);
 
             if (isset($token['error'])) {
                 header('Location: /i.didrive.php?warn=произошла ошибка ВК: ' . $token['error']);
             }
 
             $fields = 'first_name,last_name,photo_200_orig';
-
             $uinf = json_decode(file_get_contents('https://api.vk.com/method/users.get?uids=' . $token['user_id'] . '&fields=' . $fields . '&access_token=' . $token['access_token'] . '&v=5.80'), true);
-
             \Nyos\mod\Lk::$type = 'now_user_di';
 
             if (!empty($uinf['response'][0]['id'])) {
 
+//                $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
+//                \f\pa( $_SESSION[\Nyos\mod\Lk::$type] );
+//                die();
+
                 $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
 
-                $folder = \Nyos\Nyos::$folder_now . ( strpos($_SERVER['PHP_SELF'], 'didrive') !== false ? '_di' : '' );
+                if (empty($_SESSION[\Nyos\mod\Lk::$type])) {
+                    try {
 
-                $sql = 'INSERT INTO `gm_user` ( `folder`, `name`, `family`, `avatar`, `soc_web`, `soc_web_link`, `soc_web_id` ) '
-                        . ' VALUES ( :folder , :name , :family , :avatar , :soc_web , :soc_web_link , :soc_web_id ); ';
-                $ff = $db->prepare($sql);
-                $ff->execute([
-                    ':folder' => $folder,
-                    ':name' => $uinf['response'][0]['first_name'],
-                    ':family' => $uinf['response'][0]['last_name'],
-                    ':avatar' => $uinf['response'][0]['photo_200_orig'],
-                    ':soc_web' => 'vk',
-                    ':soc_web_link' => 'https://vk.com/id' . $uinf['response'][0]['id'],
-                    ':soc_web_id' => $uinf['response'][0]['id']
-                ]);
+                        if (\Nyos\nyos::$db_type == 'pg') {
 
-                $enter = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
+//                        $sql = 'INSERT INTO "gm_user" ( name, family, avatar, soc_web, soc_web_link, soc_web_id ) '
+//                                . ' VALUES ( :name , :family , :avatar , :soc_web , :soc_web_link , :soc_web_id ); ';
+                            $indb = [
+                                'folder' => \Nyos\Nyos::$folder_now . '_di',
+                                'name' => $uinf['response'][0]['first_name'],
+                                'family' => $uinf['response'][0]['last_name'],
+                                'avatar' => $uinf['response'][0]['photo_200_orig'],
+                                'soc_web' => 'vk',
+                                'soc_web_link' => 'https://vk.com/id' . $uinf['response'][0]['id'],
+                                'soc_web_id' => $uinf['response'][0]['id']
+                            ];
 
-                \nyos\Msg::sendTelegramm('Вход в управление с ВК' . PHP_EOL
+                            try {
+
+                                \f\db\db2_insert($db, 'gm_user', $indb);
+
+                                $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
+
+                                \nyos\Msg::sendTelegramm('Первый вход в управление с ВК' . PHP_EOL
+                                        . implode('+', $uinf['response'][0])
+                                        , null, 2);
+
+                                \f\redirect('/', 'i.didrive.php');
+                                exit;
+                            } catch (Exception $ex) {
+                                \f\pa($ex);
+                                die();
+                            }
+                        }
+                        //
+                        else {
+
+                            $folder = \Nyos\Nyos::$folder_now . ( strpos($_SERVER['PHP_SELF'], 'didrive') !== false ? '_di' : '' );
+                            // \f\db\db
+
+                            $sql = 'INSERT INTO `gm_user` ( `folder`, `name`, `family`, `avatar`, `soc_web`, `soc_web_link`, `soc_web_id` ) '
+                                    . ' VALUES ( :folder , :name , :family , :avatar , :soc_web , :soc_web_link , :soc_web_id ); ';
+                            $indb = [
+                                ':folder' => $folder . '_di',
+                                ':name' => $uinf['response'][0]['first_name'],
+                                ':family' => $uinf['response'][0]['last_name'],
+                                ':avatar' => $uinf['response'][0]['photo_200_orig'],
+                                ':soc_web' => 'vk',
+                                ':soc_web_link' => 'https://vk.com/id' . $uinf['response'][0]['id'],
+                                ':soc_web_id' => $uinf['response'][0]['id']
+                            ];
+                            $ff = $db->prepare($sql);
+                            $ff->execute($indb);
+                        }
+                    } catch (\Exception $ex) {
+                        if (strpos($ex->getMessage(), 'does not exist') !== false) {
+                            \Nyos\Mod\Lk::creatTable($db);
+                            $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
+
+                            // return false;
+                        }
+                    }
+
+                    $msg_sms = '(первый вход) ';
+                }
+
+                \nyos\Msg::sendTelegramm('Вход ' . $msg_sms . 'в управление с ВК' . PHP_EOL
                         . implode('+', $uinf['response'][0])
                         , null, 2);
+
+                if (!empty($msg_sms))
+                    \f\redirect('/', ( \Nyos\mod\Lk::$type == 'now_user_di' ? 'i.didrive.php' : 'index.php'), ['warn' => 'первый вход, создали вашу учётную запись']);
 
 // если это я
                 if ($uinf['response'][0]['id'] == '5903492')
@@ -268,17 +325,8 @@ try {
         }
 
 // проверка входа через соц. сервис
-        elseif (isset($_POST['token']{1})) {
+        elseif (!empty($_POST['token'])) {
 
-// \f\pa($_POST);
-// require_once $_SERVER['DOCUMENT_ROOT'] . DS . 'module' . DS . 'lk' . DS . 'class.php';
-
-
-            if (!class_exists('Nyos\\mod\\Lk')) {
-
-//throw new \NyosEx('Не обнаружен класс lk');
-                require_once DR . '/vendor/didrive_mod/lk/class.php';
-            }
 
             \Nyos\mod\Lk::$type = 'now_user_di';
 
@@ -286,6 +334,9 @@ try {
 
                 $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterSoc($db, ( isset($vv['folder']{0}) ? $vv['folder'] : null), $_POST['token'], 'didrive');
 
+
+//            \f\pa( $_SESSION[\Nyos\mod\Lk::$type] );
+//            die( __LINE__ );                
 // если это я
                 if (
 // vk
@@ -295,37 +346,38 @@ try {
                 )
                     $_SESSION['now_user_di']['access'] = 'admin';
 
-                if (class_exists('\nyos\Msg')) {
-                    $e = '';
+                //if (class_exists('\nyos\Msg')) {
+                $e = '';
 
-                    foreach ($_SESSION[\Nyos\mod\Lk::$type] as $k => $v) {
-                        if (isset($v{0}))
-                            $e .= $k . ': ' . $v . PHP_EOL;
-                    }
-
-                    \nyos\Msg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, null, 1);
-
-// \Nyos\NyosMsg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e,null,1);
-
-                    if (isset($vv['admin_auerific'])) {
-                        foreach ($vv['admin_auerific'] as $k => $v) {
-                            \nyos\Msg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, $v);
-//\Nyos\NyosMsg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, $k );
-                        }
-                    }
+                foreach ($_SESSION[\Nyos\mod\Lk::$type] as $k => $v) {
+                    if (!empty($v))
+                        $e .= $k . ': ' . $v . PHP_EOL;
                 }
 
+                \nyos\Msg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, null, 2);
+
+//// \Nyos\NyosMsg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e,null,1);
+//
+//                    if (isset($vv['admin_auerific'])) {
+//                        foreach ($vv['admin_auerific'] as $k => $v) {
+//                            \nyos\Msg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, $v);
+////\Nyos\NyosMsg::sendTelegramm('Вход в управление ' . PHP_EOL . PHP_EOL . $e, $k );
+//                        }
+//                    }
+//                }
+
                 \f\redirect('/', 'i.didrive.php', array('rand' => rand(0, 100), 'warn' => 'Вход произведён'));
-            } catch (\NyosEx $ex) {
 
-//            echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-//            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-//            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-//            . PHP_EOL . $ex->getTraceAsString()
-//            ;
-//            die(__LINE__);
-
-                \f\redirect('/', 'i.didrive.php', array('rand' => rand(0, 100), 'warn' => 'НЕописуемая ситуация ' . $ex->getMessage()));
+//            } catch (\NyosEx $ex) {
+//
+////            echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+////            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+////            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+////            . PHP_EOL . $ex->getTraceAsString()
+////            ;
+////            die(__LINE__);
+//
+//                \f\redirect('/', 'i.didrive.php', array('rand' => rand(0, 100), 'warn' => 'НЕописуемая ситуация ' . $ex->getMessage()));
             } catch (\Error $ex) {
 
 //            echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -679,11 +731,13 @@ try {
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
             . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
             . '</pre>';
+
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
             . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
             . PHP_EOL . $ex->getTraceAsString()
             . '</pre>';
+
 // echo __FILE__;
     if (class_exists('\nyos\Msg'))
         \nyos\Msg::sendTelegramm($text, null, 1);
@@ -691,20 +745,24 @@ try {
     die(str_replace('{text}', $text1, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
 } catch (\Exception $ex) {
 
-    $text1 = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-            . '</pre>';
+//    $text1 = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+//            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+//            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+//            . '</pre>';
+
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
             . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
             . PHP_EOL . $ex->getTraceAsString()
             . '</pre>';
+
 // echo __FILE__;
     if (class_exists('\nyos\Msg'))
-        \nyos\Msg::sendTelegramm($text, null, 1);
+        \nyos\Msg::sendTelegramm($text, null, 2);
 
-    die(str_replace('{text}', $text1, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+    // \f\pa($ex,2);
+
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
 } catch (\Throwable $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'

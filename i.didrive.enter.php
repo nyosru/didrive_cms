@@ -252,7 +252,7 @@ if (1 == 1) {
     if (isset($_SESSION['status1']) && $_SESSION['status1'] === true)
         $vv['body_end'] .= '<link href="/css/for_status.css" rel="stylesheet" />';
 
-    if (isset($vv['body_end']{5})) {
+    if ( !empty($vv['body_end']) ) {
 
         $r22[] = '</body>';
         $r23[] = $vv['body_end'] . '</body>';
