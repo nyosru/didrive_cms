@@ -171,7 +171,7 @@ try {
                             $sql = 'INSERT INTO `gm_user` ( `folder`, `name`, `family`, `avatar`, `soc_web`, `soc_web_link`, `soc_web_id` ) '
                                     . ' VALUES ( :folder , :name , :family , :avatar , :soc_web , :soc_web_link , :soc_web_id ); ';
                             $indb = [
-                                ':folder' => $folder . '_di',
+                                ':folder' => $folder ,
                                 ':name' => $uinf['response'][0]['first_name'],
                                 ':family' => $uinf['response'][0]['last_name'],
                                 ':avatar' => $uinf['response'][0]['photo_200_orig'],
@@ -193,11 +193,13 @@ try {
 
                     $msg_sms = '(первый вход) ';
                 }
-
+                
                 \nyos\Msg::sendTelegramm('Вход ' . $msg_sms . 'в управление с ВК' . PHP_EOL
                         . implode('+', $uinf['response'][0])
                         , null, 2);
 
+                $_SESSION[\Nyos\mod\Lk::$type] = \Nyos\Mod\Lk::enterVk($db, $uinf['response'][0]['id']);
+                
                 if (!empty($msg_sms))
                     \f\redirect('/', ( \Nyos\mod\Lk::$type == 'now_user_di' ? 'i.didrive.php' : 'index.php'), ['warn' => 'первый вход, создали вашу учётную запись']);
 
