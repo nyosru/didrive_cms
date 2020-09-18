@@ -5,7 +5,7 @@ $text = '';
 if (isset($_POST['go']) && (
         ( isset($_POST['a']) && $_POST['a'] == 123 ) ||
         ( isset($_POST['creat']) && $_POST['creat'] == 123 )
-        ) && !empty($_POST['folder'])) {
+        ) && isset($_POST['folder']{2})) {
 
     if (!extension_loaded('PDO')) {
         throw new \Exception(' pdo bd не доступен ');
@@ -67,7 +67,7 @@ if (isset($_POST['go']) && (
 
                 $ff = $db->prepare('UPDATE `2domain` SET `folder` = :folder WHERE `domain` = :domain ;');
                 $ff->execute(array(':folder' => $_POST['folder'], ':domain' => str_replace('www.', '', mb_strtolower($_SERVER['HTTP_HOST']))));
-            } elseif (isset($_POST['creat']) && $_POST['creat'] == 123 && !empty($_POST['folder']) && !empty($_POST['tpl'])
+            } elseif (isset($_POST['creat']) && $_POST['creat'] == 123 && isset($_POST['folder']{2}) && isset($_POST['tpl']{2})
             ) {
 
                 $origin = DR . '/vendor/didrive/tpls/tpls/' . $_POST['tpl'] . '/';
@@ -111,7 +111,7 @@ $dirs = scandir($_SERVER['DOCUMENT_ROOT'] . '/sites/');
 
 foreach ($dirs as $k => $v) {
 
-    if ( !empty($v) && is_dir($_SERVER['DOCUMENT_ROOT'] . '/sites/' . $v))
+    if (isset($v{2}) && is_dir($_SERVER['DOCUMENT_ROOT'] . '/sites/' . $v))
         $text .= '<option value="' . $v . '" >' . $v . '</option>';
 }
 
@@ -135,7 +135,7 @@ if (is_dir(DR . '/vendor/didrive/tpls/')) {
 
     foreach ($dirs as $k => $v) {
 
-        if ( !empty($v) && is_dir(DR . '/vendor/didrive/tpls/tpls/' . $v))
+        if (isset($v{2}) && is_dir(DR . '/vendor/didrive/tpls/tpls/' . $v))
             $text .= '<option value="' . $v . '" >' . $v . '</option>';
     }
 
@@ -145,6 +145,7 @@ if (is_dir(DR . '/vendor/didrive/tpls/')) {
 $text .= '<input type="submit" name="go" value="go" class="btn btn-success" />'
         . '</form>'
         . '</center>';
+
 
 /**
  * раз в 24 часа присылаем мсг на теелегу о сайте без папки
@@ -157,7 +158,6 @@ if (!file_exists($file_cash) || ( file_exists($file_cash) && filectime($file_cas
         \nyos\Msg::sendTelegramm('обращение к домену без сайта', null, 1);
 
     file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/sites/site_no_dir.' . \f\translit($_SERVER['HTTP_HOST'], 'uri2') . '.cash24', '1');
-
 }
 
-die( str_replace( '{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_no_site.htm') ) );
+die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_no_site.htm')));

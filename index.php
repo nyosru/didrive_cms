@@ -1,7 +1,6 @@
 <?php
 
-
-
+// wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
 //echo 'wefwef';
 
 /*
@@ -22,13 +21,13 @@ if ($_SERVER['HTTP_HOST'] == 'photo.uralweb.info' || $_SERVER['HTTP_HOST'] == 'y
     date_default_timezone_set("Asia/Yekaterinburg");
 }
 
-//if ( 1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
-//) {
+if ( 1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
+) {
 
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
-//}
+}
 
 // if( $_SERVER['HTTP_HOST'] == '46.254.18.85' || $_SERVER['HTTP_HOST'] == '37.143.15.250' ){ die(); }
 
@@ -54,8 +53,6 @@ elseif (isset($_GET['goto'])) {
 //die('123');
 
 ob_start('ob_gzhandler');
-
-// \Nyos\Nyos::$db_type == 'pg' ) ) {
 
 try {
 
@@ -965,6 +962,7 @@ try {
     } catch (\Exception $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+                . PHP_EOL . $_SERVER['REQUEST_URI']
                 . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
                 . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
                 . PHP_EOL . $ex->getTraceAsString()
@@ -977,6 +975,7 @@ try {
     } catch (\Throwable $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+                . PHP_EOL . $_SERVER['REQUEST_URI']
                 . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
                 . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
                 . PHP_EOL . $ex->getTraceAsString()
@@ -991,6 +990,7 @@ try {
 } catch (\PDOException $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+                . PHP_EOL . $_SERVER['REQUEST_URI']
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
             . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
             . PHP_EOL . $ex->getTraceAsString()
