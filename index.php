@@ -946,7 +946,7 @@ try {
         if (class_exists('\nyos\Msg'))
             \nyos\Msg::sendTelegramm($text, null, 1);
 
-        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
     } catch (\EngineException $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -958,7 +958,7 @@ try {
         if (class_exists('\nyos\Msg'))
             \nyos\Msg::sendTelegramm($text, null, 1);
 
-        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
     } catch (\Exception $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -971,7 +971,7 @@ try {
         if (class_exists('\nyos\Msg'))
             \nyos\Msg::sendTelegramm($text, null, 1);
 
-        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
     } catch (\Throwable $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -984,7 +984,7 @@ try {
         if (class_exists('\nyos\Msg'))
             \nyos\Msg::sendTelegramm($text, null, 1);
 
-        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
     }
 // зе енд товарисч
 } catch (\PDOException $ex) {
@@ -999,7 +999,7 @@ try {
     if (class_exists('\nyos\Msg'))
         \nyos\Msg::sendTelegramm($text, null, 1);
 
-    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
 } catch (\EngineException $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -1011,7 +1011,7 @@ try {
     if (class_exists('\nyos\Msg'))
         \nyos\Msg::sendTelegramm($text, null, 1);
 
-    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
 } catch (\Exception $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -1023,7 +1023,7 @@ try {
     if (class_exists('\nyos\Msg'))
         \nyos\Msg::sendTelegramm($text, null, 1);
 
-    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
 } catch (\Throwable $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
@@ -1035,5 +1035,5 @@ try {
     if (class_exists('\nyos\Msg'))
         \nyos\Msg::sendTelegramm($text, null, 1);
 
-    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template/body_error.htm')));
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
 }
