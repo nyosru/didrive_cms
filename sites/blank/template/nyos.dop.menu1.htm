@@ -1,0 +1,22 @@
+{% spaceless %}
+
+    {#{ pa(all_menu) }}
+    {{ pa(menu[1]) }#}
+
+    {% for k,v in menu[1] %}
+        {% if all_menu[k] is defined %}
+
+            {#{{ pa( all_menu[k] ) }}#}
+            {% set vv = all_menu[k] %}
+
+            <a 
+                class="p-2 text-dark {% if get.level is defined and get.level == k %} active {% endif %}" 
+                href="/{{ k }}/" title="{{ vv['name']|e }}"
+                >
+                {{ vv['name'] }}
+            </a>
+
+        {% endif %}
+    {% endfor %}
+
+{% endspaceless %}

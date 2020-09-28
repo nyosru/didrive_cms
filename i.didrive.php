@@ -364,7 +364,7 @@ try {
         $twig->addGlobal('get', $_GET);
 
 // $ttwig = $twig->loadTemplate('didrive/tpl/enter.htm');
-        $ttwig = $twig->loadTemplate(\f\like_tpl('enter', '/didrive/tpl/', dir_site_tpldidr, DR));
+        $ttwig = $twig->loadTemplate(\f\like_tpl('enter', $vv['sdd'].'../tpl/', dir_site_tpldidr, DR));
         echo $ttwig->render($vv);
 
 // echo '<br/>' . __FILE__ . ' [' . __LINE__ . ']';
