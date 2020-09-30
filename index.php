@@ -21,7 +21,7 @@ if ($_SERVER['HTTP_HOST'] == 'photo.uralweb.info' || $_SERVER['HTTP_HOST'] == 'y
     date_default_timezone_set("Asia/Yekaterinburg");
 }
 
-if ( 1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
+if (1 == 1 || $_SERVER['HTTP_HOST'] == 'adomik.dev.uralweb.info' || $_SERVER['HTTP_HOST'] == 'a2.uralweb.info' || $_SERVER['HTTP_HOST'] == 'yapdomik.uralweb.info' || $_SERVER['HTTP_HOST'] == 'adomik.uralweb.info'
 ) {
 
     ini_set('error_reporting', E_ALL);
@@ -873,13 +873,13 @@ try {
                 // \f\pa($vv['vars_site']);
             }
 
-        //if( 1 == 1 || ( isset($timer1) && $timer1 === true ) )
-        //    \f\timer_start (221);
+            //if( 1 == 1 || ( isset($timer1) && $timer1 === true ) )
+            //    \f\timer_start (221);
 
             echo $ttwig->render($vv);
 
-        //if( 1 == 1 || ( isset($timer1) && $timer1 === true ) )
-        //    echo '<br/>#'.__LINE__.' render '.\f\timer_stop(221);
+            //if( 1 == 1 || ( isset($timer1) && $timer1 === true ) )
+            //    echo '<br/>#'.__LINE__.' render '.\f\timer_stop(221);
         }
 
         $r = ob_get_contents();
@@ -935,7 +935,88 @@ try {
 
 
         die($r);
-    } catch (\PDOException $ex) {
+    }
+    //
+    catch (\PDOException $ex) {
+
+        $text = '';
+
+        if ($ex->getCode() == 1045) {
+
+            // echo $vv['folder'];
+
+            if (
+                    !empty($_POST['save_connect_db']) && $_POST['save_connect_db'] == 'ok' && !empty($_POST['s']) && $_POST['s'] == '123123' && !empty($_POST['db']) && !empty($_POST['l']) && !empty($_POST['p'])) {
+
+                $file0 = 'config.db.php';
+
+                if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/sites/' . $vv['folder'] . '/' . $file0)) {
+                    rename(
+                            $_SERVER['DOCUMENT_ROOT'] . '/sites/' . $vv['folder'] . '/' . $file0,
+                            $_SERVER['DOCUMENT_ROOT'] . '/sites/' . $vv['folder'] . '/' . $file0 . '.old.' . date('Ymd_his') . '.php');
+                }
+                
+                file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/sites/' . $vv['folder'] . '/' . $file0, '<?php '
+                        . PHP_EOL
+                        . PHP_EOL . 'if (class_exists(\'\nyos\msg\')) {'
+                        . PHP_EOL . '// акк на буке // мой шлак'
+                        . PHP_EOL . '//    \nyos\Msg::$admins_id[] = 1368605419;'
+                        . PHP_EOL . '}'
+                        . PHP_EOL
+                        . PHP_EOL . '\Nyos\Nyos::$db_type = $db_cfg[\'type\'] = \'mysql\';'
+                        . PHP_EOL . '$db_cfg[\'host\'] = \'localhost\';'
+                        . PHP_EOL
+                        . PHP_EOL . '// разработка'
+                        . PHP_EOL . '//if ($_SERVER[\'HTTP_HOST\'] == \'adomik.dev.uralweb.info\') {'
+                        . PHP_EOL . '//}'
+                        . PHP_EOL . '// боевой'
+                        . PHP_EOL . '//else {'
+                        . PHP_EOL . '$db_cfg[\'db\'] = \'' . $_POST['db'] . '\';'
+                        . PHP_EOL . '$db_cfg[\'login\'] = \'' . $_POST['l'] . '\';'
+                        . PHP_EOL . '$db_cfg[\'pass\'] = \'' . $_POST['p'] . '\';'
+                        . PHP_EOL . '// }'
+                );
+
+                \f\redirect( '/' );
+                die('сохрвнили');
+            }
+
+
+            $text = 'Проблема с подключением к БД<br/>';
+
+            echo '<h3>Проблема с подключением к БД</h3>';
+
+            echo '<center><form action="/" method=post >'
+            . '<br/>'
+            . '<input type=password name="s" />'
+            . '<input type=text name="db" placeholder="db" />'
+            . '<br/>'
+            . '<input type=text name="l" placeholder="l" />'
+            . '<input type=text name="p" placeholder="p" />'
+            . '<br/>'
+            . '<input type=submit name="save_connect_db" value="ok" />'
+            . '</form></center>';
+        }
+
+        // \f\pa($ex);
+
+        $text .= '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+                . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+                . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+                . PHP_EOL . $ex->getTraceAsString()
+                . '</pre>';
+
+        $r = ob_get_contents();
+        ob_end_clean();
+
+        if (class_exists('\nyos\Msg'))
+            \nyos\Msg::sendTelegramm($text, null, 1);
+
+        // die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
+        die(str_replace('{text}', $r, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
+    }
+    //
+    catch (\EngineException $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
                 . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
@@ -947,19 +1028,9 @@ try {
             \nyos\Msg::sendTelegramm($text, null, 1);
 
         die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-    } catch (\EngineException $ex) {
-
-        $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-                . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-                . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-                . PHP_EOL . $ex->getTraceAsString()
-                . '</pre>';
-
-        if (class_exists('\nyos\Msg'))
-            \nyos\Msg::sendTelegramm($text, null, 1);
-
-        die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-    } catch (\Exception $ex) {
+    }
+    //
+    catch (\Exception $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
                 . PHP_EOL . $_SERVER['REQUEST_URI']
@@ -972,7 +1043,9 @@ try {
             \nyos\Msg::sendTelegramm($text, null, 1);
 
         die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-    } catch (\Throwable $ex) {
+    }
+    //
+    catch (\Throwable $ex) {
 
         $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
                 . PHP_EOL . $_SERVER['REQUEST_URI']
@@ -987,10 +1060,12 @@ try {
         die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
     }
 // зе енд товарисч
-} catch (\PDOException $ex) {
+}
+//
+catch (\PDOException $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-                . PHP_EOL . $_SERVER['REQUEST_URI']
+            . PHP_EOL . $_SERVER['REQUEST_URI']
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
             . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
             . PHP_EOL . $ex->getTraceAsString()
@@ -1000,19 +1075,9 @@ try {
         \nyos\Msg::sendTelegramm($text, null, 1);
 
     die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-} catch (\EngineException $ex) {
-
-    $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-            . PHP_EOL . $ex->getTraceAsString()
-            . '</pre>';
-
-    if (class_exists('\nyos\Msg'))
-        \nyos\Msg::sendTelegramm($text, null, 1);
-
-    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-} catch (\Exception $ex) {
+}
+//
+catch (\EngineException $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
@@ -1024,7 +1089,23 @@ try {
         \nyos\Msg::sendTelegramm($text, null, 1);
 
     die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
-} catch (\Throwable $ex) {
+}
+//
+catch (\Exception $ex) {
+
+    $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+            . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+            . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+            . PHP_EOL . $ex->getTraceAsString()
+            . '</pre>';
+
+    if (class_exists('\nyos\Msg'))
+        \nyos\Msg::sendTelegramm($text, null, 1);
+
+    die(str_replace('{text}', $text, file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/template/body_error.htm')));
+}
+//
+catch (\Throwable $ex) {
 
     $text = '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
             . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
