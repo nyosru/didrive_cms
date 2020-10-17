@@ -9,6 +9,7 @@
 
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
         <link rel="stylesheet" href="{{ sd }}css.css" >
 
     </head>
@@ -119,7 +120,7 @@
                     <div class="col-12 col-md">
                         {#<img class="mb-2" src="/docs/4.3.1/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">#}
                         <img class="mb-2" src="https://imgholder.ru/100x50/8493a8/adb9ca.jpg&text=logo&font=kelson" alt="" width="100" height="50">
-                        <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+                        <small class="d-block mb-3 text-muted">&copy; 2017-{{ "now"|date('Y') }}</small>
                     </div>
                     <div class="col-6 col-md">
                         {#<h5>Features</h5>#}
